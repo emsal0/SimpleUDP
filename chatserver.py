@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-import socket, random
-
+import socket
+#import pynotify
 
 def run():
 	serv=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-	SERV = raw_input("your ip : ")
-	serv.bind((SERV,6667))
+	#SERV = raw_input("your ip : ")
+	serv.bind(('',6667))
 
 	people={}
 	while 1:
@@ -18,9 +18,11 @@ def run():
 			else:
 				people[addr[0]] = data + "_"
 			continue
-		print addr,": ",data
-		for i in people:
-			serv.sendto(people[addr[0]]+": "+data,(i,6668))
+		data = data.strip()
+		if data != '':
+			print addr,": ",data
+			for i in people:
+				serv.sendto(people[addr[0]]+": "+data,(i,6668))
 	serv.close()
 if __name__ == "__main__":
 	run()
